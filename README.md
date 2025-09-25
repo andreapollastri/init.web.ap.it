@@ -1,6 +1,6 @@
 # 🚀 Initializer for Laravel and Filament
 
-## About
+## About
 
 This is the repository of the project [Initializer for Laravel and Filament](https://init.web.ap.it).
 
