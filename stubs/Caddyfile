@@ -1,0 +1,4 @@
+localhost {
+    reverse_proxy laravel.test
+    tls internal
+}

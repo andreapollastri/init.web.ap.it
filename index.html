@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <title>Initializer for Laravel and Filament</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>"
+    />
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --secondary-color: #64748b;
+        --accent-color: #f59e0b;
+        --background-color: #ffffff;
+        --surface-color: #f8fafc;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+        --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        min-height: 100vh;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      .card {
+        background: var(--background-color);
+        border-radius: 24px;
+        box-shadow: var(--shadow-large);
+        padding: 3rem;
+        max-width: 800px;
+        width: 100%;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color),
+          var(--accent-color),
+          #e11d48,
+          #7c3aed,
+          var(--primary-color)
+        );
+        background-size: 300% 100%;
+        animation: gradientShift 3s ease-in-out infinite;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .header {
+        margin-bottom: 2rem;
+      }
+
+      .logo {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      .title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--primary-color);
+        margin-bottom: 2rem;
+      }
+
+      .terminal-demo {
+        background: #1a1a1a;
+        border-radius: 12px;
+        margin: 2rem 0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        max-width: 100%;
+      }
+
+      .terminal-header {
+        background: #2d2d2d;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .terminal-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .terminal-button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+
+      .terminal-button.red {
+        background: #ff5f56;
+      }
+
+      .terminal-button.yellow {
+        background: #ffbd2e;
+      }
+
+      .terminal-button.green {
+        background: #27ca3f;
+      }
+
+      .terminal-title {
+        color: #999;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .terminal-content {
+        background: #1a1a1a;
+        color: #e2e8f0;
+        padding: 1.5rem;
+        height: 300px;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      .terminal-content.centered {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .terminal-content.left-aligned {
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      .terminal-line {
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+      }
+
+      .terminal-prompt {
+        color: #22c55e;
+        font-weight: bold;
+      }
+
+      .terminal-command {
+        color: #e2e8f0;
+      }
+
+      .terminal-cursor {
+        color: #e2e8f0;
+        animation: blink 1s infinite;
+      }
+
+      .terminal-success {
+        color: #22c55e;
+        font-weight: bold;
+      }
+
+      .terminal-info {
+        color: #3b82f6;
+      }
+
+      .terminal-warning {
+        color: #f59e0b;
+      }
+
+      .terminal-url {
+        color: #e2e8f0;
+        font-weight: bold;
+      }
+
+      .progress-bar {
+        background: #374151;
+        border-radius: 4px;
+        height: 20px;
+        margin: 0.5rem 0;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        background: linear-gradient(90deg, #22c55e, #16a34a);
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+        position: relative;
+      }
+
+      .progress-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      .description {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 2.5rem;
+        text-align: left;
+      }
+
+      .description a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .description a:hover {
+        color: var(--primary-hover);
+        text-decoration: underline;
+      }
+
+      .code-section {
+        background: var(--surface-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border: 1px solid var(--border-color);
+      }
+
+      .code-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .code-block {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1.25rem;
+        border-radius: 12px;
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow-x: auto;
+        border: 2px solid transparent;
+      }
+
+      .code-block:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .copy-feedback {
+        color: var(--primary-color);
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-top: 0.75rem;
+        min-height: 1.25rem;
+        transition: all 0.3s ease;
+      }
+
+      .requirements {
+        background: #fef3c7;
+        border: 1px solid #fbbf24;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        text-align: left;
+      }
+
+      .requirements-title {
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .requirements-text {
+        color: #92400e;
+        font-size: 0.875rem;
+      }
+
+      .footer {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .footer-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .footer-link:hover {
+        color: var(--primary-color);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--primary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .card {
+          padding: 2rem;
+        }
+
+        .title {
+          font-size: 1.875rem;
+        }
+
+        .subtitle {
+          font-size: 1.125rem;
+        }
+
+        .code-block {
+          font-size: 0.7rem;
+        }
+
+        .terminal-content {
+          height: 350px;
+          font-size: 0.75rem;
+          padding: 1rem;
+          text-align: left;
+        }
+
+        .terminal-content.centered {
+          text-align: center;
+        }
+
+        .terminal-content.left-aligned {
+          text-align: left;
+        }
+
+        .terminal-demo {
+          margin: 1.5rem 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="header">
+          <span class="logo">🚀</span>
+          <h1 class="title">Laravel & Filament Initializer</h1>
+          <p class="subtitle">Start your next project in seconds</p>
+
+          <div class="terminal-demo" id="terminalDemo">
+            <div class="terminal-header">
+              <div class="terminal-buttons">
+                <span class="terminal-button red"></span>
+                <span class="terminal-button yellow"></span>
+                <span class="terminal-button green"></span>
+              </div>
+              <div class="terminal-title">Terminal</div>
+            </div>
+            <div class="terminal-content" id="terminalContent">
+              <div class="terminal-line">
+                <span class="terminal-prompt">$ </span>
+                <span class="terminal-command" id="typingCommand"></span>
+                <span class="terminal-cursor" id="cursor">|</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="description">
+          <p>
+            This script will set up a new Laravel project, including Filament,
+            essential packages, and a preconfigured Laravel Sail environment,
+            allowing you to start developing your application with ease. It
+            comes with a secure subdomain based on
+            <a href="https://127001.it" target="_blank">127001.it</a>
+            service and with convenient scripts to manage your development
+            environment.
+          </p>
+        </div>
+
+        <div class="code-section">
+          <div class="code-label">Quick Installation Command</div>
+          <div class="code-block" id="installCommand">
+            curl https://init.web.ap.it/bin/go.sh > go.sh && sh go.sh
+          </div>
+          <div class="copy-feedback" id="copyFeedback"></div>
+        </div>
+
+        <div class="requirements">
+          <div class="requirements-title">📋 Requirements</div>
+          <div class="requirements-text">
+            All you need is
+            <a
+              href="https://www.docker.com/products/docker-desktop"
+              target="_blank"
+              ><strong>Docker Desktop</strong></a
+            >
+            installed on your Mac
+          </div>
+        </div>
+
+        <div class="footer">
+          <a
+            href="https://github.com/andreapollastri/init"
+            target="_blank"
+            class="footer-link"
+            style="margin-right: 1.5rem"
+          >
+            👾 View on GitHub
+          </a>
+          <a
+            href="https://andreapollastri.net"
+            target="_blank"
+            class="footer-link"
+          >
+            Crafted with ❤️ by @ndrea
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document
+      .getElementById("installCommand")
+      .addEventListener("click", copyCode);
+
+    function copyCode() {
+      const code = document.getElementById("installCommand").innerText.trim();
+      const feedback = document.getElementById("copyFeedback");
+
+      navigator.clipboard
+        .writeText(code)
+        .then(() => {
+          feedback.innerText = "✅ Copied to clipboard!";
+          feedback.style.opacity = "1";
+
+          setTimeout(() => {
+            feedback.style.opacity = "0";
+            setTimeout(() => {
+              feedback.innerText = "";
+              feedback.style.opacity = "1";
+            }, 300);
+          }, 2000);
+        })
+        .catch(() => {
+          feedback.innerText = "❌ Failed to copy";
+          setTimeout(() => {
+            feedback.innerText = "";
+          }, 2000);
+        });
+    }
+
+    // Add some nice interaction effects
+    document
+      .getElementById("installCommand")
+      .addEventListener("mouseenter", function () {
+        this.style.transform = "translateY(-2px)";
+      });
+
+    document
+      .getElementById("installCommand")
+      .addEventListener("mouseleave", function () {
+        this.style.transform = "translateY(0)";
+      });
+
+    // Terminal Animation
+    const terminalContent = document.getElementById("terminalContent");
+    const typingCommand = document.getElementById("typingCommand");
+    const cursor = document.getElementById("cursor");
+
+    const command = "curl https://init.web.ap.it/bin/go.sh > go.sh && sh go.sh";
+
+    const randomEndpoints = [
+      {
+        url: "https://my-awesome-blog.127001.it",
+        panel: "https://my-awesome-blog.127001.it/admin",
+        mailpit: "https://my-awesome-blog.127001.it:8025",
+        minio: "https://my-awesome-blog.127001.it:9001",
+        mysql: "mysql://127001:password@127.0.0.1:33061/blog_db",
+        redis: "redis://127.0.0.1:63791",
+      },
+      {
+        url: "https://new-landing-page.127001.it",
+        panel: "https://new-landing-page.127001.it/admin",
+        mailpit: "https://new-landing-page.127001.it:8025",
+        minio: "https://new-landing-page.127001.it:9001",
+        mysql: "mysql://127001:password@127.0.0.1:33062/landing_db",
+        redis: "redis://127.0.0.1:63792",
+      },
+      {
+        url: "https://company-crm.127001.it",
+        panel: "https://company-crm.127001.it/admin",
+        mailpit: "https://company-crm.127001.it:8025",
+        minio: "https://company-crm.127001.it:9001",
+        mysql: "mysql://127001:password@127.0.0.1:33063/crm_db",
+        redis: "redis://127.0.0.1:63793",
+      },
+    ];
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function addTerminalLine(content, className = "") {
+      const line = document.createElement("div");
+      line.className = `terminal-line ${className}`;
+      line.innerHTML = content;
+      terminalContent.appendChild(line);
+    }
+
+    function clearTerminal() {
+      terminalContent.innerHTML = "";
+    }
+
+    function setTerminalAlignment(alignment) {
+      terminalContent.className = `terminal-content ${alignment}`;
+    }
+
+    function createProgressBar(label, duration) {
+      return new Promise(async (resolve) => {
+        clearTerminal();
+        setTerminalAlignment("centered");
+        addTerminalLine(`${label}...`);
+        const progressLine = document.createElement("div");
+        progressLine.className = "terminal-line";
+        progressLine.innerHTML =
+          '<div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>';
+        terminalContent.appendChild(progressLine);
+
+        const progressFill = progressLine.querySelector(".progress-fill");
+        let progress = 0;
+        const steps = 20;
+        const stepDuration = duration / steps;
+
+        for (let i = 0; i <= steps; i++) {
+          progress = (i / steps) * 100;
+          progressFill.style.width = `${progress}%`;
+          await sleep(stepDuration);
+        }
+
+        resolve();
+      });
+    }
+
+    async function typeCommand() {
+      cursor.style.display = "inline";
+      for (let i = 0; i < command.length; i++) {
+        typingCommand.textContent = command.substring(0, i + 1);
+        await sleep(100);
+      }
+      cursor.style.display = "none";
+    }
+
+    async function runTerminalAnimation() {
+      // Clear terminal and show command typing (left-aligned)
+      clearTerminal();
+      setTerminalAlignment("left-aligned");
+      addTerminalLine(
+        '<span class="terminal-prompt">$ </span><span class="terminal-command" id="typingCommand"></span><span class="terminal-cursor" id="cursor">|</span>'
+      );
+
+      // Get fresh references
+      const newTypingCommand = document.getElementById("typingCommand");
+      const newCursor = document.getElementById("cursor");
+
+      // Type the command
+      newCursor.style.display = "inline";
+      for (let i = 0; i < command.length; i++) {
+        newTypingCommand.textContent = command.substring(0, i + 1);
+        await sleep(100);
+      }
+      newCursor.style.display = "none";
+
+      await sleep(500);
+
+      // Start execution with screen clearing between steps (centered)
+      await createProgressBar("Downloading installation script", 1500);
+      await sleep(300);
+
+      await createProgressBar("Setting up Laravel project", 2000);
+      await sleep(300);
+
+      await createProgressBar("Configuring Filament", 1800);
+      await sleep(300);
+
+      await createProgressBar("Starting Docker containers", 2200);
+      await sleep(300);
+
+      await createProgressBar("Finalizing setup", 1600);
+      await sleep(500);
+
+      // Show success message with random endpoints (left-aligned)
+      const endpoints =
+        randomEndpoints[Math.floor(Math.random() * randomEndpoints.length)];
+
+      clearTerminal();
+      setTerminalAlignment("left-aligned");
+      addTerminalLine(
+        '<span class="terminal-success">🍺 Your project has been installed!</span>'
+      );
+      addTerminalLine(
+        '<span class="terminal-warning">👾 PROJECT ENDPOINTS</span>'
+      );
+      addTerminalLine("");
+      addTerminalLine(
+        `<span class="terminal-info">URL:</span>     <span class="terminal-url">${endpoints.url}</span>`
+      );
+      addTerminalLine(
+        `<span class="terminal-info">PANEL:</span>   <span class="terminal-url">${endpoints.panel}</span>`
+      );
+      addTerminalLine(
+        `<span class="terminal-info">MAILPIT:</span> <span class="terminal-url">${endpoints.mailpit}</span>`
+      );
+      addTerminalLine(
+        `<span class="terminal-info">MINIO:</span>   <span class="terminal-url">${endpoints.minio}</span>`
+      );
+      addTerminalLine(
+        `<span class="terminal-info">MYSQL:</span>   <span class="terminal-url">${endpoints.mysql}</span>`
+      );
+      addTerminalLine(
+        `<span class="terminal-info">REDIS:</span>   <span class="terminal-url">${endpoints.redis}</span>`
+      );
+
+      // Wait before restarting
+      await sleep(5000);
+      runTerminalAnimation();
+    }
+
+    // Start the animation when page loads
+    setTimeout(runTerminalAnimation, 2000);
+  </script>
+</html>
