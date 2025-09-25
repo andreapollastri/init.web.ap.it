@@ -29,7 +29,7 @@ Thank you for considering contributing to this project! Feel free to open Pull R
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability, please send an e-mail to Andrea Pollastri via [andrea@mail123.org](mailto:andrea@mail123.org). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability, please send an e-mail to Andrea Pollastri via [andrea@mail123.org](mailto:andrea@mail123.org).
 
 ## License
 
