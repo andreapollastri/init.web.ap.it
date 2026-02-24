@@ -4,9 +4,9 @@
 
 PHP_VERSION_ATTR=php84
 PHP_VERSION=8.4
-MYSQL_VERSION_ATTR=8.0
+MYSQL_VERSION_ATTR=latest
 MYSQL_VERSION=8
-FILAMENT_VERSION=4.0
+FILAMENT_VERSION=5.0
 LARAVEL_VERSION=12
 DOMAIN=127001.it
 ENDPOINT=https://init.web.ap.it
@@ -15,7 +15,7 @@ ENDPOINT=https://init.web.ap.it
 # (stable, beta, dev, etc...)
 COMPOSER_MINIMUM_STABILITY=stable
 
-TOTAL_STEPS=21
+TOTAL_STEPS=22
 CURRENT_STEP=0
 
 save_cursor() {
@@ -312,6 +312,17 @@ echo '/phpstan.neon' >> .gitignore
 ./vendor/bin/sail bash -c "composer require -W --dev laravel-shift/blueprint"
 echo '/draft.yaml' >> .gitignore
 echo '/.blueprint' >> .gitignore
+
+
+
+
+
+########################### STEP #################################
+show_progress "Installing Boost"
+
+./vendor/bin/sail bash -c "composer require --dev laravel/boost"
+./vendor/bin/sail bash -c "php artisan filament:install --no-interaction"
+
 
 
 

@@ -9,7 +9,7 @@ Currently, the project installs Laravel 12, Filament 4, and other convenient pac
 This installer will install locally:
 
 - Laravel 12
-- Filament 4
+- Filament 5
 - Useful packages
 - SSL cert
 
