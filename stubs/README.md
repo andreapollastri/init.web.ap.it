@@ -73,7 +73,7 @@ sh bin/stop.sh
 Code Testing:
 
 ```bash
-sh bin/pint.sh
+sh bin/test.sh
 ```
 
 Code Lint:
