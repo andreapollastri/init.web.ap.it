@@ -10,7 +10,7 @@
 
 | Tool               | Version | Purpose                      |
 | ------------------ | ------- | ---------------------------- |
-| Laravel            | 12      | Application framework        |
+| Laravel            | 13      | Application framework        |
 | Filament           | 5       | Admin panel & form builder   |
 | Laravel Sail       | latest  | Docker-based dev environment |
 | MySQL              | 8       | Relational database          |
@@ -48,7 +48,7 @@ The installer will:
 1. Check that Docker is running
 2. Ask you to choose a project subdomain (e.g. `my-app` → `my-app.127001.it`)
 3. Create all helper scripts
-4. Scaffold a fresh Laravel 12 project
+4. Scaffold a fresh Laravel 13 project
 5. Configure environment, Docker Compose, and Caddy
 6. Set up GitHub Actions CI workflow
 7. Start all Docker containers via Sail
