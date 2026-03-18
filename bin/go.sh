@@ -2,8 +2,8 @@
 
 # curl https://init.web.ap.it/go.sh > go.sh && sh go.sh
 
-PHP_VERSION_ATTR=php85
-PHP_VERSION=8.5
+PHP_VERSION_ATTR=php84
+PHP_VERSION=8.4
 MYSQL_VERSION_ATTR=latest
 MYSQL_VERSION=8
 FILAMENT_VERSION=5.0
@@ -147,7 +147,12 @@ mv composer_temp.json composer.json
 
 sed -i '' "s/LARAVELV/$LARAVEL_VERSION/" composer.json
 
-./vendor/bin/sail bash -c "composer config minimum-stability $COMPOSER_MINIMUM_STABILITY"
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/$PHP_VERSION_ATTR-composer:latest \
+    composer config minimum-stability $COMPOSER_MINIMUM_STABILITY
 
 
 
@@ -371,7 +376,7 @@ fi
 ########################### STEP #################################
 show_progress "Configuring SSL certificates"
 
-docker cp $(docker-compose ps -q caddy):/data/caddy/pki/authorities/local/root.crt .
+docker cp $(docker compose ps -q caddy):/data/caddy/pki/authorities/local/root.crt .
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain root.crt
 unlink root.crt
 

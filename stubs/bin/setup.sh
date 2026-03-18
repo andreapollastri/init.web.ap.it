@@ -17,7 +17,7 @@ docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
     -w /var/www/html \
-    laravelsail/php84-composer:latest \
+    laravelsail/PHPV-composer:latest \
     composer install --ignore-platform-reqs
 
 ./vendor/bin/sail up -d
@@ -44,7 +44,7 @@ else
     sudo chown -R "$USER:" .
 fi
 
-docker cp $(docker-compose ps -q caddy):/data/caddy/pki/authorities/local/root.crt .   
+docker cp $(docker compose ps -q caddy):/data/caddy/pki/authorities/local/root.crt .   
 sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain root.crt
 unlink root.crt
 
